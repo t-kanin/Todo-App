@@ -3,14 +3,15 @@ class TasksController < ApplicationController
 
   def index
     @tasks = current_user.tasks
+    @percent = ((task_close.count.to_f / @tasks.count.to_f) * 100).to_i
   end
 
   def index_open_tasks
-    @tasks = current_user.tasks.where(done: false)
+    @tasks = task_open
   end
 
   def index_close_tasks
-    @tasks = current_user.tasks.where(done: true)
+    @tasks = task_close
   end
   
   def show
@@ -57,5 +58,13 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(%i[name description done])
+  end
+
+  def task_open
+    current_user.tasks.where(done: false)
+  end
+
+  def task_close
+    current_user.tasks.where(done: true)
   end
 end

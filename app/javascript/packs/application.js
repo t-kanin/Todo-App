@@ -19,4 +19,5 @@ $(document).on('turbolinks:load', function(){
       $(this).closest('.message').transition('fade');
     });
   $(".ui.dropdown").dropdown(); 
+  $('#progress').progress();
 })
