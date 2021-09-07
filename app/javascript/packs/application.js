@@ -8,14 +8,17 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import "semantic-ui-sass"
 
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 
+//$(document).on("turbolinks:load", () => $(".ui.dropdown").dropdown());
 
 $(document).on('turbolinks:load', function(){
   $('.message .close').on('click', function() {
-    $(this).closest('.message').transition('fade');
-  });
+      $(this).closest('.message').transition('fade');
+    });
+  $(".ui.dropdown").dropdown(); 
 })
