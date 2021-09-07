@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_action :find_task, only: %i[show edit update]
 
   def index
-    @tasks = Task.all
+    @tasks = current_user.tasks
   end
 
   def show; end
@@ -13,8 +13,10 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
+    @task.user = current_user
+
     if @task.save
-      flash[:notice] = 'The new task has been created'
+      flash[:notice] = 'New task has been created'
       redirect_to @task
     else
       render 'new'
@@ -32,13 +34,18 @@ class TasksController < ApplicationController
     end
   end
 
+  def destroy
+    @task.destroy
+    redirect_to tasks_path
+  end
+
   private
 
   def find_task
-    @task = Task.find(paramms[:id])
+    @task = Task.find(params[:id])
   end
 
   def task_params
-    params.require(:task).permit(:name)
+    params.require(:task).permit(%i[name description])
   end
 end

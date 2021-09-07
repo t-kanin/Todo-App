@@ -1,0 +1,19 @@
+<h3 class = "ui header"> <%= @task.name %></h3> 
+<div class="ui grid">
+  <div class="sixteen wide column">
+    <div class="row">
+      <form class="ui form">
+        <div class="field">
+          <label for="description">Description: </label>
+          <textarea disabled name="description" id="description" cols="30" rows="10"><%= @task.description %></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="six wide column">
+      <%= link_to 'Edit', edit_task_path(@task), class: 'ui button'%>
+      <%= link_to 'Delete', @task, class: 'ui button', method: :delete, data: { confirm: 'Are you sure' }%>
+    </div>
+  </div>
+</div>
