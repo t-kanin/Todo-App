@@ -1,10 +1,18 @@
 class TasksController < ApplicationController
-  before_action :find_task, only: %i[show edit update]
+  before_action :find_task, only: %i[show edit update update_status]
 
   def index
     @tasks = current_user.tasks
   end
 
+  def index_open_tasks
+    @tasks = current_user.tasks.where(done: false)
+  end
+
+  def index_close_tasks
+    @tasks = current_user.tasks.where(done: true)
+  end
+  
   def show
     @comments = @task.comments
   end
@@ -32,7 +40,7 @@ class TasksController < ApplicationController
       flash[:notice] = 'The task has been updated'
       redirect_to @task
     else
-      render 'edi'
+      render 'edit'
     end
   end
 
@@ -48,6 +56,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(%i[name description])
+    params.require(:task).permit(%i[name description done])
   end
 end
