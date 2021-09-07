@@ -8,5 +8,6 @@
     <%= f.label :description, 'Description: '%>
     <%= f.text_area :description %>
   </div>
+  <%= f.select :done, [true, false]%><br>
   <%= f.submit 'Submit', class: 'ui button'%>
 <%end %>
