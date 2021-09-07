@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+user1 = User.create(name: 'user1', password: 'password')
+user2 = User.create(name: 'user2', password: 'password')
+
+task1 = Task.create(name: 'Create login page')
+task2 = Task.create(name: 'Add login authentication')
+task3 = Task.create(name: 'Make the page looks beautiful')

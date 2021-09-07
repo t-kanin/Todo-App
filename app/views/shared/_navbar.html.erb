@@ -1,0 +1,12 @@
+<div class="ui inverted menu">
+  <div class = "ui container">
+    <%= link_to 'Home', root_path, class: 'item'%>
+    <div class="right menu">
+      <% if user_signed_in? %> 
+        <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: "ui item"%>
+      <% else %>
+        <%= link_to 'Sign up', new_user_registration_path, class: "ui item"%>
+      <% end %>
+    </div>
+  </div>
+</div>
