@@ -3,7 +3,7 @@ class TasksController < ApplicationController
 
   def index
     @tasks = current_user.tasks
-    @percent = ((task_close.count.to_f / @tasks.count.to_f) * 100).to_i
+    @percent = ((task_close.count.to_f / @tasks.count) * 100).to_i
   end
 
   def index_open_tasks
@@ -13,7 +13,7 @@ class TasksController < ApplicationController
   def index_close_tasks
     @tasks = task_close
   end
-  
+
   def show
     @comments = @task.comments
   end
