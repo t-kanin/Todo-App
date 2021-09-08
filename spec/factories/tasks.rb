@@ -5,5 +5,6 @@ FactoryBot.define do
     name { 'My Task' }
     done { false }
     description { 'I want to do something' }
+    association :user
   end
 end

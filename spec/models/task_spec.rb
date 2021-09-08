@@ -19,6 +19,13 @@ RSpec.describe Task, type: :model do
       end
     end
 
+    context 'when there is no user' do
+      it 'returns invalid' do
+        task.user = nil
+        expect(task).not_to be_valid
+      end
+    end
+
     context 'when name is too short' do
       it 'returns invalid' do
         task.name = 'ab'
