@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
+  before_action :authenticate_user_from_token!
   before_action :find_task, only: %i[index create]
 
   def index
     @comments = @task.comments
     respond_to do |format|
-      format.html 
+      format.html
       format.json { render json: @comments }
     end
   end

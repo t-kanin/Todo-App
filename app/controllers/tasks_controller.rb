@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  before_action :authenticate_user_from_token!
   before_action :find_task, only: %i[show edit update destroy]
 
   def index
