@@ -16,7 +16,6 @@ require 'rails_helper'
 RSpec.describe Comment, type: :model do
   describe 'when first created' do
     subject { build :comment }
-    
     it { is_expected.to be_valid }
   end
 
