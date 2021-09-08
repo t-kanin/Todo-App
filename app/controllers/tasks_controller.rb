@@ -8,14 +8,26 @@ class TasksController < ApplicationController
 
   def index_open_tasks
     @tasks = task_open
+    respond_to do |format|
+      format.html
+      format.json { render json: @tasks }
+    end
   end
 
   def index_close_tasks
     @tasks = task_close
+    respond_to do |format|
+      format.html
+      format.json { render json: @tasks }
+    end
   end
 
   def show
     @comments = @task.comments
+    respond_to do |format|
+      format.html
+      format.json { render json: @task }
+    end
   end
 
   def new

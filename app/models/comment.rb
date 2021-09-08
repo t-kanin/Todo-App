@@ -1,6 +1,6 @@
 class Comment < ApplicationRecord
-  validates :comment, presence: true
-
   belongs_to :user
   belongs_to :task
+  
+  validates :comment, presence: true
 end

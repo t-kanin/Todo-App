@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :tasks do
     get :index_open_tasks, on: :collection
     get :index_close_tasks, on: :collection
-    resources :comments, only: %i[new create destroy]
+    resources :comments, only: %i[index new create destroy]
   end
 
   root to: 'tasks#index'
