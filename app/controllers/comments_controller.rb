@@ -1,5 +1,15 @@
+# frozen_string_literal: true
+
 class CommentsController < ApplicationController
-  before_action :find_task, only: %i[create]
+  before_action :find_task, only: %i[index create]
+
+  def index
+    @comments = @task.comments
+    respond_to do |format|
+      format.html 
+      format.json { render json: @comments }
+    end
+  end
 
   def new
     @comment = Comment.new
