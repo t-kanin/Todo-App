@@ -1,36 +1,37 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :bigint           not null, primary key
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  reset_password_token   :string
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  authentication_token   :string(30)
+#
 require 'rails_helper'
+require 'database_cleaner/active_record'
 
 RSpec.describe User, type: :model do
+  describe 'when first created' do
+    subject { build :user }
+
+    it { is_expected.to be_valid }
+  end
+
+  describe '.associations' do
+    it { is_expected.to have_many(:tasks) }
+    it { is_expected.to have_many(:comments) }
+  end
+
   describe '#validations' do
-    let(:user) { build :user }
-
-    context 'when there is no email' do
-      it 'returns invalid' do
-        user.email = ''
-        expect(user).not_to be_valid
-      end
-    end
-
-    context 'when there is invalid email' do
-      let(:user1) { build :user, email: 'aa@@exmaple.com' }
-      let(:user2) { build :user, email: 'a.com' }
-
-      it 'returns invalid' do
-        aggregate_failures do
-          expect(user1).not_to be_valid
-          expect(user2).not_to be_valid
-        end
-      end
-    end
-
-    context 'when there is same email' do
-      let(:user)  { create :user }
-      let(:user1) { build :user, email: user.email }
-      it 'returns invalid' do
-        expect(user1).not_to be_valid
-      end
-    end
+    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to validate_presence_of(:password) }
+    it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
   end
 end
