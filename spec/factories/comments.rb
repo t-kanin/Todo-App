@@ -9,9 +9,11 @@
 #  user_id    :integer
 #  task_id    :integer
 #
+require 'faker'
+
 FactoryBot.define do
   factory :comment do
-    comment { 'My Comment' }
+    comment { Faker::Lorem.sentence }
     association :user
     association :task
   end

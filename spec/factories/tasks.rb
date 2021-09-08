@@ -14,9 +14,9 @@
 #
 FactoryBot.define do
   factory :task do
-    name { 'My Task' }
+    name { Faker::Lorem.sentence(word_count: 3) }
     done { false }
-    description { 'I want to do something' }
+    description { Faker::Lorem.sentence }
     association :user
   end
 end
