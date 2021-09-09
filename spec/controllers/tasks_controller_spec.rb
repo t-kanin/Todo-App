@@ -26,5 +26,26 @@ RSpec.describe TasksController, type: :controller do
         end
       end
     end
-  end  
+  end
+
+  describe 'GET /show' do
+    context 'sign in user' do
+      subject { get :show, params: { id: task.id } }
+      let(:user) { create :user }
+      let(:task) { create :task, user: user }
+      before { sign_in user }
+
+      it { is_expected.to render_template(:show) }
+      it { is_expected.to have_http_status(:ok) }
+      it 'returns a task' do
+        subject
+        aggregate_failures do
+          expect(assigns[:comments].count).to eq 0
+          create(:comment, task: task, user: user)
+          create(:comment, task: task, user: user)
+          expect(assigns[:comments].count).to eq 2
+        end
+      end
+    end
+  end
 end
