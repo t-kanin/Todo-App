@@ -6,6 +6,7 @@ RSpec.describe TasksController, type: :controller do
   describe 'GET /index' do
     subject { get :index }
 
+    # TODO: extract sign_in context ?
     context 'when not sign in' do
       it { is_expected.to redirect_to(user_session_path) }
     end
@@ -39,6 +40,7 @@ RSpec.describe TasksController, type: :controller do
 
       it 'returns open tasks' do
         subject
+        # TODO: Refactor this aggregate_failures block to be used in other blocks
         aggregate_failures 'testing number of tasks' do
           expect(assigns(:tasks)).to be_empty
           create(:task, user: user)
@@ -91,6 +93,35 @@ RSpec.describe TasksController, type: :controller do
           create(:comment, task: task, user: user)
           expect(assigns[:comments].count).to eq 2
         end
+      end
+    end
+  end
+
+  describe 'POST #create' do
+    let(:user) { create :user }
+    let(:task) { build :task, user: user }
+
+    subject do
+      post :create, params: { task: {
+        name: task.name,
+        description: task.description,
+        done: task.done,
+        user_id: user.id
+      } }
+    end
+
+    it { is_expected.to redirect_to(user_session_path) }
+
+    context 'when sign in' do
+      before { sign_in user }
+      it 'creates task' do
+        expect { subject }.to change(Task, :count).by(1)
+        expect(response).to redirect_to(assigns(:task))
+      end
+
+      it 'renders new' do
+        post :create, params: { task: { name: '' } }
+        expect(response).to render_template(:new)
       end
     end
   end
