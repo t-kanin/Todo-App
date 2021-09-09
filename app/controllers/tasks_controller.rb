@@ -9,7 +9,7 @@ class TasksController < ApplicationController
     @percent = calcualte_progression
   end
 
-  def index_open_tasks
+  def index_open
     @tasks = current_user.tasks.tasks_open?
     respond_to do |format|
       format.html
@@ -17,7 +17,7 @@ class TasksController < ApplicationController
     end
   end
 
-  def index_close_tasks
+  def index_close
     @tasks = current_user.tasks.tasks_open?(true)
     respond_to do |format|
       format.html
@@ -39,7 +39,6 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-    @task.user = current_user
 
     if @task.save
       flash[:notice] = 'New task has been created'
@@ -72,7 +71,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit([:name, :description, :done])
+    params.require(:task).permit([:name, :description, :done]).merge(user: current_user)
   end
 
   def calcualte_progression
