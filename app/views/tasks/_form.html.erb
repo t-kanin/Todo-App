@@ -1,13 +1,13 @@
-<%= render 'shared/errors', err: @task%>
+<%= render 'shared/errors', err: @task %>
 <%= form_with model: @task, class: "ui form" do |f| %>
   <div class="field">
     <%= f.label :name, 'Task:' %>
-    <%= f.text_field :name, placeholder: 'Write someting'%>
+    <%= f.text_field :name, placeholder: 'Write someting' %>
   </div>
   <div class="field">
-    <%= f.label :description, 'Description: '%>
+    <%= f.label :description, 'Description: ' %>
     <%= f.text_area :description %>
   </div>
-  <%= f.select :done, [true, false]%><br>
-  <%= f.submit 'Submit', class: 'ui button'%>
-<%end %>
+  <%= f.select :done, [true, false] %><br>
+  <%= f.submit 'Submit', class: 'ui button' %>
+<% end %>

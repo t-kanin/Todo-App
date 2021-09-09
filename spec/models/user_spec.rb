@@ -15,7 +15,6 @@
 #  authentication_token   :string(30)
 #
 require 'rails_helper'
-require 'database_cleaner/active_record'
 
 RSpec.describe User, type: :model do
   describe 'when first created' do

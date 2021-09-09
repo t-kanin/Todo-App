@@ -1,12 +1,12 @@
 <div class="ui comments">
   <div class="comment">
     <div class="content">
-      <a class="author"><%= comment.user.email%></a>
+      <a class="author"><%= comment.user.email %></a>
       <div class="metadata">
-        <div class="date"> <%= time_ago_in_words(comment.created_at)%> </div>
+        <div class="date"> <%= time_ago_in_words(comment.created_at) %> ago</div>
       </div>
       <div class="text">
-        <%= comment.comment%>
+        <%= comment.comment %>
       </div>
     </div>
 </div>

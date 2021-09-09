@@ -17,4 +17,6 @@ class Task < ApplicationRecord
   has_many :comments, dependent: :destroy
 
   validates :name, presence: true, length: { minimum: 3 }
+
+  scope :tasks_open?, ->(done = false) { where(done: done) }
 end

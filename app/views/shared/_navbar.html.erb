@@ -1,22 +1,22 @@
 <div class="ui inverted menu">
   <div class = "ui container">
-    <%= link_to 'Home', root_path, class: 'item'%>
-    <%if user_signed_in?%>
+    <%= link_to 'Home', root_path, class: 'item' %>
+    <% if user_signed_in? %>
       <div class="ui dropdown item"> Task
         <i class="dropdown icon"></i>
         <div class="menu">
-          <%= link_to 'See all tasks', tasks_path, class: 'item'%>
-          <%= link_to 'See all open tasks', index_open_tasks_tasks_path, class: 'item'%>
-          <%= link_to 'See all closed tasks', index_close_tasks_tasks_path, class: 'item'%>
-          <%= link_to 'Create new task', new_task_path, class: 'item'%>
+          <%= link_to 'See all tasks', tasks_path, class: 'item' %>
+          <%= link_to 'See all open tasks', index_open_tasks_tasks_path, class: 'item' %>
+          <%= link_to 'See all closed tasks', index_close_tasks_tasks_path, class: 'item' %>
+          <%= link_to 'Create new task', new_task_path, class: 'item' %>
         </div>
       </div>
       <div class="right menu">
-        <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: "ui item"%>
+        <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: "ui item" %>
       </div>
     <%else%>
       <div class="right menu">
-        <%= link_to 'Sign up', new_user_registration_path, class: "ui item"%>
+        <%= link_to 'Sign up', new_user_registration_path, class: "ui item" %>
       </div>
     <%end%>
   </div>

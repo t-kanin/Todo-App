@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Users::SessionsController < Devise::SessionsController
- # Disable CSRF protection
+  # Disable CSRF protection
   skip_before_action :verify_authenticity_token
 
   # Be sure to enable JSON.

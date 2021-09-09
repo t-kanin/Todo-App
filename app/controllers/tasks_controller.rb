@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 class TasksController < ApplicationController
   before_action :authenticate_user_from_token!
   before_action :find_task, only: %i[show edit update destroy]
 
   def index
     @tasks = current_user.tasks
-    @percent = ((task_close.count.to_f / @tasks.count) * 100).to_i
+    @percent = calcualte_progression
   end
 
   def index_open_tasks
-    @tasks = task_open
+    @tasks = current_user.tasks.tasks_open?
     respond_to do |format|
       format.html
       format.json { render json: @tasks }
@@ -16,7 +18,7 @@ class TasksController < ApplicationController
   end
 
   def index_close_tasks
-    @tasks = task_close
+    @tasks = current_user.tasks.tasks_open?(true)
     respond_to do |format|
       format.html
       format.json { render json: @tasks }
@@ -70,14 +72,12 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(%i[name description done])
+    params.require(:task).permit([:name, :description, :done])
   end
 
-  def task_open
-    current_user.tasks.where(done: false)
-  end
+  def calcualte_progression
+    return 0 if current_user.tasks.count.zero?
 
-  def task_close
-    current_user.tasks.where(done: true)
+    ((current_user.tasks.tasks_open?(true).count.to_f / current_user.tasks.count) * 100).to_i
   end
 end

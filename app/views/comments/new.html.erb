@@ -1,8 +1,8 @@
-<%= render 'shared/errors', err: @comment%>
+<%= render 'shared/errors', err: @comment %>
 <%= form_with(model: @comment, url: task_comments_path, class: "ui form") do |f| %>
   <div class="field">
     <%= f.label :comment, 'Comment:' %>
-    <%= f.text_field :comment, placeholder: 'Write your comment here'%>
+    <%= f.text_field :comment, placeholder: 'Write your comment here' %>
   </div>
-  <%= f.submit 'Save', class: 'ui button'%>
+  <%= f.submit 'Save', class: 'ui button' %>
 <%end %>
