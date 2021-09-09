@@ -125,4 +125,24 @@ RSpec.describe TasksController, type: :controller do
       end
     end
   end
+
+  describe 'GET #edit' do
+    let(:user) { create :user }
+    let(:task) { create :task }
+    subject { get :edit, params: { id: task.id } }
+
+    context 'when not sign in' do
+      it { is_expected.to redirect_to(user_session_path) }
+    end
+
+    context 'when sign in' do
+      before { sign_in user }
+      it { is_expected.to render_template(:edit) }
+
+      it 'returns the same task' do
+        subject
+        expect(assigns(:task)).to eq task
+      end
+    end
+  end
 end
