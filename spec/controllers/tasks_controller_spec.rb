@@ -87,6 +87,7 @@ RSpec.describe TasksController, type: :controller do
       it { is_expected.to have_http_status(:ok) }
       it 'returns a task' do
         subject
+        expect(assigns(:task)).to eq task
         aggregate_failures do
           expect(assigns[:comments].count).to eq 0
           create(:comment, task: task, user: user)
