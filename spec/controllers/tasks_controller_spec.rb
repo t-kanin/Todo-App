@@ -28,6 +28,28 @@ RSpec.describe TasksController, type: :controller do
     end
   end
 
+  describe 'GET /index_open' do
+    subject { get :index_open }
+    context 'sign in user' do
+      let(:user) { create :user }
+      before { sign_in user }
+
+      it { is_expected.to render_template(:index_open) }
+      it { is_expected.to have_http_status(:ok) }
+
+      it 'returns open tasks' do
+        subject
+        aggregate_failures 'testing number of tasks' do
+          expect(assigns(:tasks)).to be_empty
+          create(:task, user: user)
+          expect(assigns(:tasks).count).to eq 1
+          create(:task, user: user, done: true)
+          expect(assigns(:tasks).count).to eq 1
+        end
+      end
+    end
+  end
+
   describe 'GET /show' do
     context 'sign in user' do
       subject { get :show, params: { id: task.id } }
