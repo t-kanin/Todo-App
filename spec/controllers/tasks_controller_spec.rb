@@ -99,9 +99,6 @@ RSpec.describe TasksController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:user) { create :user }
-    let(:task) { build :task, user: user }
-
     subject do
       post :create, params: { task: {
         name: task.name,
@@ -110,6 +107,9 @@ RSpec.describe TasksController, type: :controller do
         user_id: user.id
       } }
     end
+
+    let(:user) { create :user }
+    let(:task) { build :task, user: user }
 
     it { is_expected.to redirect_to(user_session_path) }
 
@@ -128,9 +128,10 @@ RSpec.describe TasksController, type: :controller do
   end
 
   describe 'GET #edit' do
+    subject { get :edit, params: { id: task.id } }
+
     let(:user) { create :user }
     let(:task) { create :task }
-    subject { get :edit, params: { id: task.id } }
 
     context 'when not sign in' do
       it { is_expected.to redirect_to(user_session_path) }
@@ -143,6 +144,27 @@ RSpec.describe TasksController, type: :controller do
       it 'returns the same task' do
         subject
         expect(assigns(:task)).to eq task
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    subject { patch :update, params: { id: task.id, task: { name: 'new name' } } }
+
+    let(:user) { create :user }
+    let(:task) { create :task }
+
+    context 'when not sign in' do
+      it { is_expected.to redirect_to(user_session_path) }
+    end
+
+    context 'when sign in' do
+      before { sign_in user }
+
+      it 'changes name' do
+        subject
+        expect(response).to redirect_to(assigns(:task))
+        expect(assigns(:task).name).to match('new name')
       end
     end
   end
