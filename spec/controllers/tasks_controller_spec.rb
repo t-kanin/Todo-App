@@ -4,75 +4,21 @@ require 'rails_helper'
 
 RSpec.describe TasksController, type: :controller do
   describe 'GET /index' do
-    subject { get :index }
+    subject { get :index, params: {} }
 
-    # TODO: extract sign_in context ?
-    context 'when not sign in' do
-      it { is_expected.to redirect_to(user_session_path) }
-    end
+    include_examples 'redirect_to login'
 
-    context 'sign in user' do
+    context 'when sign in' do
       let(:user) { create :user }
       before { sign_in user }
 
       it { is_expected.to render_template(:index) }
       it { is_expected.to have_http_status(:ok) }
 
-      it 'returns all tasks' do
-        subject
-        aggregate_failures 'testing number of tasks' do
-          expect(assigns(:tasks)).to be_empty
-          create(:task, user: user)
-          expect(assigns(:tasks).count).to eq 1
-        end
-      end
-    end
-  end
-
-  describe 'GET /index_open' do
-    subject { get :index_open }
-    context 'sign in user' do
-      let(:user) { create :user }
-      before { sign_in user }
-
-      it { is_expected.to render_template(:index_open) }
-      it { is_expected.to have_http_status(:ok) }
-
-      it 'returns open tasks' do
-        subject
-        # TODO: Refactor this aggregate_failures block to be used in other blocks
-        aggregate_failures 'testing number of tasks' do
-          expect(assigns(:tasks)).to be_empty
-          create(:task, user: user)
-          expect(assigns(:tasks).count).to eq 1
-          create(:task, user: user, done: true)
-          expect(assigns(:tasks).count).to eq 1
-        end
-      end
-    end
-  end
-
-  describe 'GET /index_close' do
-    subject { get :index_close }
-
-    context 'sign in user' do
-      let(:user) { create :user }
-      before { sign_in user }
-
-      it { is_expected.to render_template(:index_close) }
-      it { is_expected.to have_http_status(:ok) }
-
-      it 'returns close tasks' do
-        subject
-        aggregate_failures 'testing number of tasks' do
-          expect(assigns(:tasks)).to be_empty
-          create(:task, user: user)
-          expect(assigns(:tasks).count).to eq 0
-          create(:task, user: user)
-          create(:task, user: user, done: true)
-          expect(assigns(:tasks).count).to eq 1
-        end
-      end
+      # /tasks/?status=close
+      it_behaves_like  'index', ['', false]
+      it_behaves_like  'index', ['open', false]
+      it_behaves_like  'index', ['close', true]
     end
   end
 
@@ -81,6 +27,7 @@ RSpec.describe TasksController, type: :controller do
       subject { get :show, params: { id: task.id } }
       let(:user) { create :user }
       let(:task) { create :task, user: user }
+
       before { sign_in user }
 
       it { is_expected.to render_template(:show) }
