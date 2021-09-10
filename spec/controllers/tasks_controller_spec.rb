@@ -56,9 +56,10 @@ RSpec.describe TasksController, type: :controller do
       it 'creates task' do
         expect { subject }.to change(Task, :count).by 1
         expect(response).to redirect_to(assigns(:task))
+        expect(assigns(:task).name).to match task.name
       end
 
-      it 'renders new' do
+      it 'renders new given invalid inputs' do
         post :create, params: { task: { name: '' } }
         expect(response).to render_template(:new)
         expect { response }.to change(Task, :count).by 0
@@ -87,9 +88,7 @@ RSpec.describe TasksController, type: :controller do
     let(:user) { create :user }
     let(:task) { create :task }
 
-    context 'when not sign in' do
-      it { is_expected.to redirect_to(user_session_path) }
-    end
+    include_examples 'redirect_to login'
 
     context 'when sign in' do
       before { sign_in user }
@@ -98,6 +97,11 @@ RSpec.describe TasksController, type: :controller do
         subject
         expect(response).to redirect_to(assigns(:task))
         expect(assigns(:task).name).to match('new name')
+      end
+
+      it 'render new given invalid inputs' do
+        patch :update, params: { id: task.id, task: { name: '' } }
+        expect(response).to render_template(:edit)
       end
     end
   end
