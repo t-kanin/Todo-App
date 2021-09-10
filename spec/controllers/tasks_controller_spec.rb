@@ -8,39 +8,36 @@ RSpec.describe TasksController, type: :controller do
 
     include_examples 'redirect_to login'
 
-    context 'when sign in' do
+    context 'when user signs in' do
       let(:user) { create :user }
+
       before { sign_in user }
-
-      it { is_expected.to render_template(:index) }
-      it { is_expected.to have_http_status(:ok) }
-
+      it_behaves_like 'render correct template', :index
       # /tasks/?status=close
-      it_behaves_like  'index', ['', false]
-      it_behaves_like  'index', ['open', false]
-      it_behaves_like  'index', ['close', true]
+      it_behaves_like 'index', ['', false]
+      it_behaves_like 'index', ['open', false]
+      it_behaves_like 'index', ['close', true]
     end
   end
 
   describe 'GET /show' do
-    context 'sign in user' do
-      subject { get :show, params: { id: task.id } }
-      let(:user) { create :user }
-      let(:task) { create :task, user: user }
+    subject { get :show, params: { id: task.id } }
 
+    let(:task)  { create :task }
+    let(:task2) { create :task }
+    let(:user)  { create :user }
+
+    include_examples 'redirect_to login'
+
+    context 'when user signs in' do
       before { sign_in user }
+      it_behaves_like 'render correct template', :show
 
-      it { is_expected.to render_template(:show) }
-      it { is_expected.to have_http_status(:ok) }
-      it 'returns a task' do
+      it 'shows the same task' do
         subject
         expect(assigns(:task)).to eq task
-        aggregate_failures do
-          expect(assigns[:comments].count).to eq 0
-          create(:comment, task: task, user: user)
-          create(:comment, task: task, user: user)
-          expect(assigns[:comments].count).to eq 2
-        end
+        create_list(:comment, 3, task: task, user: user)
+        expect(assigns(:task).comments.count).to eq 3
       end
     end
   end
