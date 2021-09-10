@@ -105,4 +105,21 @@ RSpec.describe TasksController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    subject { delete :destroy, params: { id: task.id } }
+
+    let(:user) { create :user }
+    let(:task) { create :task, user: user }
+    include_examples 'redirect_to login'
+
+    context 'when sign in' do
+      before { sign_in user }
+      before { task }
+      it 'destroys existing task and redirect to index' do
+        expect { subject }.to change { Task.count }.by(-1)
+        expect(response).to redirect_to tasks_path
+      end
+    end
+  end
 end
