@@ -24,6 +24,4 @@ FactoryBot.define do
       comment { '' }
     end
   end
-
-
 end
