@@ -16,7 +16,12 @@ require 'faker'
 FactoryBot.define do
   factory :comment do
     comment { Faker::Lorem.sentence }
+
     association :user
     association :task
+
+    trait :empty do
+      comment { '' }
+    end
   end
 end
