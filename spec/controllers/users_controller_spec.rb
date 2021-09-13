@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
-  describe '#POST #create' do
+  describe 'POST #create' do
     subject do
       post :create, params: {
         email: user.email,
