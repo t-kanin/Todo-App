@@ -5,7 +5,7 @@ class TasksController < ApplicationController
   before_action :find_task, only: %i[show edit update destroy]
 
   def index
-    @tasks = tasks(params[:status])
+    @tasks = tasks
     @percent = calcualte_progression
   end
 
@@ -64,8 +64,8 @@ class TasksController < ApplicationController
     ((current_user.tasks.closed.count.to_f / current_user.tasks.count) * 100).to_i
   end
 
-  def tasks(status)
-    case status
+  def tasks
+    case params[:status]
     when 'open'
       current_user.tasks.in_progress
     when 'close'
