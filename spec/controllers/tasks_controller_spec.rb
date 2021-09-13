@@ -38,12 +38,17 @@ RSpec.describe TasksController, type: :controller do
 
   describe 'POST #create' do
     subject do
-      post :create, params: { task: {
-        name: task.name,
-        description: task.description,
-        done: task.done,
-        user_id: user.id
-      } }
+      post(
+        :create,
+        params: {
+          task: {
+            name: task.name,
+            description: task.description,
+            done: task.done,
+            user_id: user.id
+          }
+        }
+      )
     end
 
     let(:user) { create :user }
@@ -53,6 +58,7 @@ RSpec.describe TasksController, type: :controller do
 
     context 'when sign in' do
       before { sign_in user }
+
       it 'creates task' do
         expect { subject }.to change(Task, :count).by 1
         expect(response).to redirect_to(assigns(:task))

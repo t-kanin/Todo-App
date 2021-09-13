@@ -51,7 +51,7 @@ class TasksController < ApplicationController
   private
 
   def find_task
-    @task = Task.find(params[:id])
+    @task = Task.find(params[:id, :status])
   end
 
   def task_params
@@ -61,15 +61,15 @@ class TasksController < ApplicationController
   def calcualte_progression
     return 0 if current_user.tasks.count.zero?
 
-    ((current_user.tasks.close?(true).count.to_f / current_user.tasks.count) * 100).to_i
+    ((current_user.tasks.closed.count.to_f / current_user.tasks.count) * 100).to_i
   end
 
   def tasks(status)
     case status
     when 'open'
-      current_user.tasks.close?
+      current_user.tasks.in_progress
     when 'close'
-      current_user.tasks.close?(true)
+      current_user.tasks.closed
     else
       current_user.tasks
     end
