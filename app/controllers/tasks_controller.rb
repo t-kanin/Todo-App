@@ -5,8 +5,8 @@ class TasksController < ApplicationController
   before_action :find_task, only: %i[show edit update destroy]
 
   def index
-    @tasks = tasks(params[:status])
-    @percent = ProgressionCalculator.call(closed_tasks, current_user.tasks)
+    @tasks = tasks
+    @percent = ProgressionCalculator.call(current_user)
   end
   
   def show

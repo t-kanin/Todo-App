@@ -4,9 +4,9 @@
 class ProgressionCalculator < ApplicationService
   attr_reader :closed, :tasks
 
-  def initialize(closed_tasks, tasks)
-    @closed = closed_tasks
-    @tasks = tasks
+  def initialize(user)
+    @closed = user.tasks.closed
+    @tasks = user.tasks
   end
 
   def call
