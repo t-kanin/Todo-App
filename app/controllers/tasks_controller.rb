@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     @tasks = tasks
     @percent = calcualte_progression
   end
-
+  
   def show
     @comments = @task.comments
     respond_to do |format|
