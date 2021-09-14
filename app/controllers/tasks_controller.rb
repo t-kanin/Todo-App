@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     @tasks = tasks(params[:status])
     @percent = ProgressionCalculator.call(closed_tasks, current_user.tasks)
   end
-
+  
   def show
     @comments = @task.comments
     respond_to do |format|
@@ -66,8 +66,8 @@ class TasksController < ApplicationController
     current_user.tasks.in_progress
   end
 
-  def tasks(status)
-    case status
+  def tasks
+    case params[:status]
     when 'open'
       in_progress_tasks
     when 'close'
