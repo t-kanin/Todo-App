@@ -5,26 +5,10 @@ class TasksController < ApplicationController
   before_action :find_task, only: %i[show edit update destroy]
 
   def index
-    @tasks = current_user.tasks
+    @tasks = tasks
     @percent = calcualte_progression
   end
-
-  def index_open
-    @tasks = current_user.tasks.tasks_open?
-    respond_to do |format|
-      format.html
-      format.json { render json: @tasks }
-    end
-  end
-
-  def index_close
-    @tasks = current_user.tasks.tasks_open?(true)
-    respond_to do |format|
-      format.html
-      format.json { render json: @tasks }
-    end
-  end
-
+  
   def show
     @comments = @task.comments
     respond_to do |format|
@@ -67,16 +51,27 @@ class TasksController < ApplicationController
   private
 
   def find_task
-    @task = Task.find(params[:id])
+    @task = Task.find(params[:id, :status])
   end
 
   def task_params
-    params.require(:task).permit([:name, :description, :done]).merge(user: current_user)
+    params.require(:task).permit(:name, :description, :done).merge(user: current_user)
   end
 
   def calcualte_progression
     return 0 if current_user.tasks.count.zero?
 
-    ((current_user.tasks.tasks_open?(true).count.to_f / current_user.tasks.count) * 100).to_i
+    ((current_user.tasks.closed.count.to_f / current_user.tasks.count) * 100).to_i
+  end
+
+  def tasks
+    case params[:status]
+    when 'open'
+      current_user.tasks.in_progress
+    when 'close'
+      current_user.tasks.closed
+    else
+      current_user.tasks
+    end
   end
 end

@@ -18,5 +18,6 @@ class Task < ApplicationRecord
 
   validates :name, presence: true, length: { minimum: 3 }
 
-  scope :tasks_open?, ->(done = false) { where(done: done) }
+  scope :in_progress, -> { where(done: false) }
+  scope :closed, -> { where(done: true) }
 end

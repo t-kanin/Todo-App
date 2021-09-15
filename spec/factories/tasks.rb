@@ -14,7 +14,7 @@
 #
 FactoryBot.define do
   factory :task do
-    name { Faker::Lorem.sentence(word_count: 3) }
+    sequence(:name) { |n| Faker::Lorem.sentence(word_count: 3) + "-#{n}" }
     done { false }
     description { Faker::Lorem.sentence }
     association :user

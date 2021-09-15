@@ -15,8 +15,9 @@ require 'faker'
 
 FactoryBot.define do
   factory :comment do
+    sequence(:comment) { |n| Faker::Lorem.sentence + "-#{n}" }
     comment { Faker::Lorem.sentence }
-
+    
     association :user
     association :task
 
