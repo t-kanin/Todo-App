@@ -6,7 +6,7 @@ class TasksController < ApplicationController
 
   def index
     @tasks = tasks
-    @percent = calcualte_progression
+    @percent = ProgressionCalculator.call(current_user)
   end
   
   def show
@@ -58,20 +58,24 @@ class TasksController < ApplicationController
     params.require(:task).permit(:name, :description, :done).merge(user: current_user)
   end
 
-  def calcualte_progression
-    return 0 if current_user.tasks.count.zero?
-
-    ((current_user.tasks.closed.count.to_f / current_user.tasks.count) * 100).to_i
+  def closed_tasks
+    current_user.tasks.closed
   end
+
+  def in_progress_tasks
+    current_user.tasks.in_progress
+  end
+
 
   def tasks
     case params[:status]
     when 'open'
-      current_user.tasks.in_progress
+      in_progress_tasks
     when 'close'
-      current_user.tasks.closed
+      closed_tasks
     else
       current_user.tasks
     end
+    ((current_user.tasks.closed.count.to_f / current_user.tasks.count) * 100).to_i
   end
 end
