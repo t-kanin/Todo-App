@@ -14,4 +14,8 @@ class ProgressionCalculator < ApplicationService
 
     ((closed.count.to_f / tasks.count) * 100).to_i
   end
+
+  def foo
+    puts 'bar'
+  end
 end
