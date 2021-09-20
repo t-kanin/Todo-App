@@ -18,4 +18,8 @@ class ProgressionCalculator < ApplicationService
   def foo
     puts 'bar'
   end
+
+  def bar
+    puts 'goo'
+  end
 end
